@@ -469,7 +469,7 @@ namespace CNC.Core
                 using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PnPEntity WHERE Caption like '%(COM%'")) try
                 {
                     var ports = searcher.Get().Cast<ManagementBaseObject>().ToList().Select(p => p["Caption"].ToString());
-                    var portList = _portnames.Select(n => ports.FirstOrDefault(s => s.Contains('(' + n + ')'))).ToList();
+                    var portList = _portnames.Select(n => ports.FirstOrDefault(s => s.Contains('(' + n + ')'))).Where(x=>!string.IsNullOrEmpty(x)).ToList();
                     foreach (var fullname in portList)
                     {
                         var name = fullname.Substring(fullname.IndexOf("(COM") + 1).TrimEnd(')');
